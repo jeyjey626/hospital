@@ -1,5 +1,6 @@
 package com;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -9,6 +10,8 @@ import java.util.stream.IntStream;
 
 
 public class Main2 {
+
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
     private static final int UNSTABLECHANCEPERCENT = 10;
     private static Random random = new Random();
     public static void main(String[] args){
@@ -31,16 +34,23 @@ public class Main2 {
                             patient.addExamination(i, doctorType, healing(DoctorType.valueOf(doctorType), patient));
                         });
         });
-        System.out.println(patients.get(1));
 
-        System.out.println(patients.stream()
+        System.out.println(patients.get(0).getFullName() + " " +
+                patients.get(0)
+                .getExaminationArrayList().stream()
+                .collect(Collectors.toMap(
+                        Examination::getDay,
+                        examination -> df2.format(examination.getLifePoints()))
+                )); //printing one of the patients for data insight
+
+        System.out.println("Our survivors: " + patients.stream()
                 .filter(patient -> patient.getLifePoints() > 0)
                 .map(Patient::getFullName)
                 .collect(Collectors.toList()));
     }
 
     private static Double healing(DoctorType doctorType, Patient patient){
-        double afterHealing = doctorType.getHealing() * (patient.getLifePoints() - random.nextInt(10)); //patient lost some points overnight
+        double afterHealing = doctorType.getHealing() * (patient.getLifePoints() - random.nextInt(10)); //patient lost some points overnight - max 10
         patient.setLifePoints(afterHealing);
         return afterHealing;
     }

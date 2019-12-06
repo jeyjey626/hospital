@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 @Data
 @Getter
@@ -18,6 +19,7 @@ class Patient {
     private Boolean stable;
 
     public String getFullName(){return name + " " + surname;}
+
 
     public void addExamination(Integer day, String doctorType, Double lifePoints){
         this.examinationArrayList.add(new Examination(day, doctorType, lifePoints));

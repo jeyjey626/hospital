@@ -6,8 +6,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+
 public enum  DoctorType {
-    DOCTOR("DOCTOR", 1.7), NURSE("NURSE", 1.3);
+    DOCTOR("DOCTOR", 1.4), NURSE("NURSE", 1.15);
 
     private String doctor;
     private Double healing;

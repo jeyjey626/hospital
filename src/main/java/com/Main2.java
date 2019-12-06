@@ -2,9 +2,15 @@ package com;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+
 public class Main2 {
+    private static final int UNSTABLECHANCEPERCENT = 10;
+    private static Random random = new Random();
     public static void main(String[] args){
 
         List<Patient> patients = Arrays.asList(
@@ -14,10 +20,29 @@ public class Main2 {
             new Patient("Tan", "Kowalski"),
             new Patient("Pan", "Kowalski")
         );
-        System.out.println(patients);
-        IntStream.rangeClosed(1,12).forEach(i -> patients.
-                forEach(patient -> patient.addExamination(i, DoctorType.randomDoctor(), patient.getLifePoints())));
+
+
+        IntStream.rangeClosed(1,12).forEach(i -> {
+            patients.stream()
+                        .filter(patient -> patient.getLifePoints() > 0) //STOP curing already dead
+                        .filter(patient -> random.nextInt(100) > UNSTABLECHANCEPERCENT) //not curing the unstable (0.1 chance)
+                        .forEach(patient -> {
+                            String doctorType = DoctorType.randomDoctor();
+                            patient.addExamination(i, doctorType, healing(DoctorType.valueOf(doctorType), patient));
+                        });
+        });
         System.out.println(patients.get(1));
+
+        System.out.println(patients.stream()
+                .filter(patient -> patient.getLifePoints() > 0)
+                .map(Patient::getFullName)
+                .collect(Collectors.toList()));
+    }
+
+    private static Double healing(DoctorType doctorType, Patient patient){
+        double afterHealing = doctorType.getHealing() * (patient.getLifePoints() - random.nextInt(10)); //patient lost some points overnight
+        patient.setLifePoints(afterHealing);
+        return afterHealing;
     }
 }
 /*

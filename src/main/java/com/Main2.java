@@ -16,9 +16,8 @@ public class Main2 {
         );
         System.out.println(patients);
         IntStream.rangeClosed(1,12).forEach(i -> patients.
-                forEach(patient -> patient.addExamination(i, DoctorType.DOCTOR.getDoctor(), patient.getLifePoints())));
-        System.out.println(patients);
-        System.out.println("tada");
+                forEach(patient -> patient.addExamination(i, DoctorType.randomDoctor(), patient.getLifePoints())));
+        System.out.println(patients.get(1));
     }
 }
 /*

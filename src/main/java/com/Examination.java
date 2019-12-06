@@ -1,8 +1,18 @@
 package com;
+import jdk.nashorn.internal.objects.annotations.Constructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Date;
 
+@Data
+@Getter
+@Setter
+@Builder
 public class Examination {
-    private Date date;
-    private double weight;
+    private Integer day; //todo: do I need it?
+    private String doctorType;
+    private Double lifePoints;
+
 }
